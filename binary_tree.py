@@ -45,3 +45,58 @@ class BinaryTree:
       self.pos_ordem(aux.esquerda)
       self.pos_ordem(aux.direita)
       print(f"{str(aux.value)}")
+
+  def remover(self, valor):
+    if self.root == None:
+      return print("Árvore vázia")
+
+    aux = self.root
+    raiz_ant = self.root
+    while aux.value != valor:
+      raiz_ant = aux
+      if valor < aux.value:
+        aux = aux.esquerda
+        esq = True
+      else:
+        aux = aux.direita
+        esq = False
+      if aux == None:
+        return False
+
+    # Se for um nó terminal
+    if aux.esquerda == None and aux.direita == None:
+      if aux == self.root:
+        self.root = None
+      elif esq == True:
+        raiz_ant.setEsquerda(None)
+      else:
+        raiz_ant.setDireita(None)
+
+    # Se não tiver nó a direita
+    elif aux.direita == None:
+      if aux == self.root:
+        self.root = self.root.esquerda
+      elif esq == True:
+        raiz_ant.setEsquerda(aux.esquerda)
+      else:
+        raiz_ant.setDireita(aux.esquerda)
+
+    # Se não tiver nó a esquerda
+    elif aux.esquerda == None:
+      if aux == self.root:
+        self.root = self.root.direita
+      elif esq == True:
+        raiz_ant.setEsquerda(aux.direita)
+      else:
+        raiz_ant.setDireita(aux.direita)
+    
+    # Se tiver 2 nós
+    else:
+      no_remov = aux
+      aux = aux.esquerda
+      while aux.direita != None:
+        aux = aux.direita
+      self.remover(aux.value)
+      no_remov = aux.value
+      
+    return True
